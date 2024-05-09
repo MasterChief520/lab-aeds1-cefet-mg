@@ -1,0 +1,234 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <stdbool.h>
+#include <string.h>
+#include <math.h>
+/*
+void EspacosPorSimbolo(char*mensagem){
+    for (int x = 0; x < strlen(mensagem); x++){
+        if (mensagem[x]=='#'){
+            mensagem[x]=' ';}
+    }
+}*
+void tirarDigito(char*mensagem){
+
+
+}
+
+void dividirBlks(char*mensagem){
+
+
+}
+
+void permutarBlks(char*mensagem){
+
+
+}
+void charfalso(){
+
+}*/
+/*
+void cifra(char*mensagem){
+    int x=0;
+    for(x;x<strlen(mensagem);x++){
+        if (((int)mensagem[i] >= 65 && (int)mensagem[i] <= 90) || ((int)mensagem[i] >= 97 && (int)mensagem[i] <= 122)){
+            if (((int)mensagem[i] - 5 > 64 && (int)mensagem[i] < 91) || (int)mensagem[i] - 5 > 96){
+                mensagem[i] = (char)((int)mensagem[i] - 5);
+            }else{
+                mensagem[i] = (char)((int)mensagem[i] - 5 + 26);
+            }
+        }
+    }
+}*/
+char* removerLIXO(char*mensagem, int decimal){
+    int i=0;
+    for(i ;i<5 ;i++){
+        mensagem[i]=' ';
+    }
+     mensagem[decimal+5] = ' ';
+return mensagem;
+}
+
+
+char* copiar(char mensagem[], int tam){
+    char mensagem2[tam-6] ;
+    int j=0;
+    int i=0;
+    for(i;i<tam-6;i++){
+
+        if(mensagem[i] != ' '){
+            j++;
+            mensagem2[j]=mensagem[i];
+        }
+    }
+return mensagem2;
+}
+
+
+char* troca(int tamanho, char mensagem2[]){
+    int tam = tamanho;
+    tamanho = (tamanho/2) -1;
+    int i=0;
+    for (i;i<tamanho;i++){
+        char aux = mensagem2[i];
+        char aux2 = mensagem2[i+1];
+        mensagem2[i] = mensagem2[tam-4];
+        mensagem2[tam-4] = aux;
+        mensagem2[i+1] = mensagem2[tam-3];
+        mensagem2[tam-3]= aux2;
+        i+=3;
+        tam -=4;
+    }
+    return mensagem2;
+}
+
+char* inverte(int t, char mensagem2[], char mensagem3[]){
+    int i=0;
+    int tam = t;
+    for(i; i< tam; i++){
+    mensagem3[i] = mensagem2[i+1];
+    mensagem3[i+1] = mensagem2[i];
+    i++;
+    }
+return mensagem3;
+}
+
+char* decodifica(int tam, char mensagem3[],char decodificado[]){
+    int i =0;
+    for (i; i<=tam;i++){
+    if (mensagem3[i] =='#'){
+    decodificado[i]=32;
+    }else if ((mensagem3[i] >97)|| (mensagem3[i] <123)){
+
+    decodificado[i] = mensagem3[i]-5;
+
+    }else if((mensagem3[i]>65) || (mensagem3[i] <91)){
+
+    decodificado[i] = mensagem3[i]-5;
+
+    }
+    if(mensagem3[i]==97){
+    decodificado[i]= 118;
+    }
+    if(mensagem3[i]==98){
+    decodificado[i]= 119;
+    }
+    if(mensagem3[i]==99){
+    decodificado[i]= 120;
+    }
+    if(mensagem3[i]==100){
+    decodificado[i]= 121;
+    }
+    if(mensagem3[i]==101){
+    decodificado[i]= 122;
+    }
+    if(mensagem3[i]==65){
+    decodificado[i]= 86;
+    }
+    if(mensagem3[i]==66){
+    decodificado[i]= 87;
+    }
+    if(mensagem3[i]==67){
+    decodificado[i]=88 ;
+    }
+    if(mensagem3[i]==68){
+    decodificado[i]= 89;
+    }
+    if(mensagem3[i]==69){
+    decodificado[i]= 90;
+    }
+
+    }
+}
+
+int binParaDec(int x){
+     int dec=0,base=1,resto;
+    while (x > 0){
+        resto=x% 10;
+        dec=dec+resto*base;
+        x=x/10;
+        base=base*2;
+    }
+    return dec;
+}
+
+int main(){
+    int i;
+    char nome[30];
+
+    printf ("Digite o nome do arquivo: ");
+    scanf("%s", nome);
+
+    FILE *arquivo;
+    arquivo = fopen (nome, "r");
+
+    if(arquivo == NULL){ /*verificar se consegue ler o arquivo*/
+    printf ("Esse arquivo não pôde ser lido. \n");
+    exit(0);
+    }
+    char mensagem[25000];
+    int tam = 0;
+    tam = sizeof(mensagem);
+
+    for (i = 0; i<tam; i++ ){
+        mensagem[i] = ' ';
+    }
+
+    char *result = fgets(mensagem, 25000,arquivo);
+    if(result == NULL)
+    printf("Erro na leitura \n");
+
+    else
+    fclose(arquivo);
+
+    int letrasdamensagem =0;
+
+    for(i = 0; i<tam;i++){
+        if((mensagem[i] == '\n')||(mensagem[i] ==' ')){
+            letrasdamensagem++;
+        }
+    }
+    tam = tam - letrasdamensagem;
+
+    if(tam%2==0){}
+    else{
+        tam +=1;
+    mensagem[tam]= '#';
+    }
+
+    int binario = 0 ;
+
+    for(i = 0; i<5;i++){
+        binario += mensagem[i];
+    }
+    int decimal=0;
+    decimal = binParaDec(binario);
+
+    char mensagem2[tam];
+    copiar(mensagem,tam);
+    char mensagem3[tam];
+    troca(tam, mensagem2);
+    inverte(tam,mensagem2,mensagem3);
+    char decodificado[tam];
+    decodifica(tam,mensagem3, decodificado);
+    decodificado[tam-2] = '\0';
+/*rintf ("Decript: %s \n" ,decodificado);
+
+
+
+//printf("Tamanho msg = ***%d****\n",tam-1 );
+//printf("Segunda msg = -%s-\n",mensagem3);
+//int cs = sizeof(mensagem2);
+//printf("Segunda msg tamanho = ---%i---\n",cs);
+
+*/
+
+printf("\n--------------------\nMensagem codificada:\n--------------------\n%s\n", mensagem);
+
+
+
+printf("----------------------\nMensagem decodificada:\n----------------------\n%s", decodificado);
+
+    return 0;
+}
+
